@@ -1,0 +1,10 @@
+nexon:
+  api:
+    key: YOUR_NEXON_API_KEY_HERE
+
+spring:
+  security:
+    jwt:
+      secret-key: YOUR_JWT_SECRET_KEY_HERE
+  datasource:
+    password: maple_password

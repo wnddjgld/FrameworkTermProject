@@ -30,14 +30,14 @@ spring:
 
   security:
     jwt:
-      secret-key: ${JWT_SECRET_KEY:your-super-secret-key-must-be-at-least-256-bits-long-for-hs256-algorithm}
+      secret-key: ${JWT_SECRET_KEY}  # 기본값 제거!
       access-token-validity: 3600000    # 1?? (???)
       refresh-token-validity: 604800000  # 7? (???)
 
 # Nexon API 설정
 nexon:
   api:
-    key: ${NEXON_API_KEY:test_1e99f6c0f68a5f6dbebe724b1a2643343bff3208252356651338689a1a19531cefe8d04e6d233bd35cf2fabdeb93fb0d}
+    key: ${NEXON_API_KEY}
     base-url: https://open.api.nexon.com
     timeout: 10000
     max-retry: 3
@@ -60,3 +60,5 @@ logging:
     org.springframework.security: DEBUG
     org.springframework.web: INFO
     org.hibernate.SQL: DEBUG
+
+    
