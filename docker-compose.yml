@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: maple-mysql
+    ports:
+      - "3307:3306"  # ← 3306 → 3307로 변경!
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: maplestory_db
+      MYSQL_USER: maple_user
+      MYSQL_PASSWORD: maple_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: maple-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: maple-phpmyadmin
+    ports:
+      - "8082:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: maple_user
+      PMA_PASSWORD: maple_password
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
+  redis-data:

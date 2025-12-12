@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: MapleProject
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/maplestory_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true  # ? 3306 ? 3307
+    username: maple_user
+    password: maple_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    open-in-view: false
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 3000
+
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY:your-super-secret-key-must-be-at-least-256-bits-long-for-hs256-algorithm}
+      access-token-validity: 3600000    # 1?? (???)
+      refresh-token-validity: 604800000  # 7? (???)
+
+# Nexon API 설정
+nexon:
+  api:
+    key: ${NEXON_API_KEY:test_1e99f6c0f68a5f6dbebe724b1a2643343bff3208252356651338689a1a19531cefe8d04e6d233bd35cf2fabdeb93fb0d}
+    base-url: https://open.api.nexon.com
+    timeout: 10000
+    max-retry: 3
+    daily-limit: 9000
+
+# Actuator ??
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# ?? ??
+logging:
+  level:
+    kr.ac.kopo.wnddjgld.mapleproject: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG

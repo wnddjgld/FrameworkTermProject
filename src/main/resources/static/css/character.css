@@ -1,0 +1,360 @@
+/* 뒤로가기 버튼 */
+.back-btn {
+    padding: 10px 20px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 20px;
+}
+
+.back-btn:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--accent-orange);
+}
+
+/* 캐릭터 프로필 */
+.character-profile {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+    display: flex;
+    gap: 40px;
+    animation: fadeInUp 0.6s ease;
+}
+
+.profile-left {
+    flex-shrink: 0;
+}
+
+.character-avatar {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-yellow) 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5em;
+    box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+    margin-bottom: 20px;
+    border: 2px solid var(--border-color);
+}
+
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.profile-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-favorite {
+    background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+.btn-favorite:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+}
+
+.btn-compare {
+    background-color: var(--accent-blue);
+    box-shadow: 0 2px 8px rgba(74, 158, 255, 0.3);
+}
+
+.btn-compare:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 158, 255, 0.4);
+}
+
+.profile-right {
+    flex: 1;
+}
+
+.character-title {
+    font-size: 3em;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.character-basic-tags {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.character-basic-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.info-item {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.info-label {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.info-value {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* 탭 */
+.detail-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tab-button {
+    flex: 1;
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-secondary);
+}
+
+.tab-button:hover {
+    background-color: var(--hover-bg);
+}
+
+.tab-button.active {
+    background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));
+    color: white;
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 스탯 */
+.stats-container {
+    display: grid;
+    gap: 24px;
+}
+
+.stats-section {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.stat-card {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-orange);
+}
+
+.stat-name {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* 장비 */
+.equipment-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.equipment-card {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.equipment-card:hover {
+    border-color: var(--accent-orange);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.equipment-icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.equipment-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.equipment-type {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+}
+
+/* 스킬 */
+.skills-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.skill-card {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--success-green);
+}
+
+.skill-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+.skill-level {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.skill-description {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+}
+
+/* 성장 */
+.growth-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.growth-chart {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    border-radius: 8px;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .character-profile {
+        flex-direction: column;
+    }
+
+    .character-avatar {
+        margin: 0 auto 20px;
+    }
+
+    .character-title {
+        font-size: 2em;
+        text-align: center;
+    }
+
+    .character-basic-tags {
+        justify-content: center;
+    }
+
+    .character-basic-info {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-tabs {
+        flex-wrap: wrap;
+    }
+
+    .stats-grid,
+    .equipment-grid,
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}

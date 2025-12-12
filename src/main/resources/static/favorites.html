@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>즐겨찾기 - 메이플 캐릭터 검색</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/character-detail.css">
+    <link rel="stylesheet" href="/css/favorites.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/dashboard" class="nav-logo">
+                <span class="logo-text">CheolCheol</span>
+                <span class="logo-suffix">.gg</span>
+            </a>
+            <nav class="nav-menu">
+                <a href="/dashboard" class="nav-link">홈</a>
+                <a href="/favorites" class="nav-link active">즐겨찾기</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle-btn" aria-label="테마 전환">🌙</button>
+                <span class="user-name" id="userName"></span>
+                <button class="logout-btn" onclick="logout()">로그아웃</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="favorites-container">
+        <div class="favorites-header">
+            <h1>★ 즐겨찾기 캐릭터</h1>
+            <button class="edit-mode-btn" id="editModeBtn" onclick="toggleEditMode()">편집</button>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">★</div>
+            <h2>등록된 즐겨찾기가 없습니다</h2>
+            <p>자주 찾는 캐릭터를 즐겨찾기에 추가해보세요</p>
+            <a href="/dashboard" class="btn-primary">캐릭터 검색하기</a>
+        </div>
+
+        <!-- Favorites Grid -->
+        <div class="favorites-grid" id="favoritesGrid">
+            <!-- Favorites will be loaded here -->
+        </div>
+    </div>
+
+    <script src="/js/favorites.js"></script>
+    <script src="/js/api.js"></script>
+</body>
+</html>

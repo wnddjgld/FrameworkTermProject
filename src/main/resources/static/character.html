@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>캐릭터 상세정보 - 메이플 캐릭터 검색</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/css/character-detail.css?v=20251210006">
+</head>
+<body>
+    <!-- Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/dashboard" class="nav-logo">
+                <span class="logo-text">CheolCheol</span>
+                <span class="logo-suffix">.gg</span>
+            </a>
+            <nav class="nav-menu">
+                <a href="/dashboard" class="nav-link">홈</a>
+                <a href="/favorites" class="nav-link">즐겨찾기</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle-btn" aria-label="테마 전환">🌙</button>
+                <span class="user-name" id="userName"></span>
+                <button class="logout-btn" onclick="logout()">로그아웃</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="maple-logo-container">
+                <img src="https://ssl.nexon.com/s2/game/maplestory/renewal/common/logo.png" alt="메이플스토리 로고" class="maple-logo">
+            </div>
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <h2 class="loading-title">캐릭터 정보를 불러오는 중...</h2>
+            <p class="loading-subtitle">잠시만 기다려주세요</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="character-detail-container">
+        <!-- Character Header Section (Compact) -->
+        <div class="character-header">
+            <!-- Left: Character Avatar -->
+            <div class="header-left">
+                <div class="character-avatar-box">
+                    <img id="characterImage" class="character-avatar" src="" alt="캐릭터 이미지">
+                </div>
+                <div class="avatar-actions">
+                    <button class="avatar-btn" title="그래프">📈</button>
+                    <button class="avatar-btn" title="캘린더">📅</button>
+                </div>
+            </div>
+
+            <!-- Center: Character Info -->
+            <div class="header-center">
+                <!-- Tags -->
+                <div class="character-tags">
+                    <span class="tag world-tag" id="characterWorldTag">-</span>
+                    <a href="#" class="tag job-tag" id="characterJobTag">-</a>
+                </div>
+
+                <!-- Name with favorite -->
+                <div class="name-row">
+                    <h1 class="character-name" id="characterName">로딩 중...</h1>
+                    <button class="favorite-star" id="favoriteButton" onclick="toggleFavorite()">☆</button>
+                </div>
+
+                <!-- Sub Info -->
+                <div class="character-sub-info">
+                    <div class="sub-info-item">
+                        <span class="sub-info-label">길드</span>
+                        <a href="#" class="sub-info-value link" id="characterGuild">-</a>
+                    </div>
+                    <div class="sub-info-item">
+                        <span class="sub-info-label">인기도</span>
+                        <span class="sub-info-value" id="characterPopularity">-</span>
+                    </div>
+                    <div class="sub-info-item">
+                        <span class="sub-info-label">종합랭킹</span>
+                        <span class="sub-info-value" id="overallRanking">-</span>
+                    </div>
+                    <div class="sub-info-item">
+                        <span class="sub-info-label">직업랭킹</span>
+                        <span class="sub-info-value" id="jobRanking">-</span>
+                    </div>
+                </div>
+
+                <!-- Main Stats Row -->
+                <div class="main-stats-row">
+                    <div class="main-stat-box">
+                        <span class="main-stat-label">레벨</span>
+                        <span class="main-stat-value" id="characterLevel">-</span>
+                    </div>
+                    <div class="main-stat-box">
+                        <span class="main-stat-label">유니온</span>
+                        <span class="main-stat-value" id="characterUnion">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Background Character Image -->
+            <div class="header-right">
+                <img id="characterBgImage" class="character-bg-image" src="" alt="">
+                <div class="header-status">
+                    <span class="status-badge online" id="loginStatus">최근 7일 접속</span>
+                    <span class="created-date" id="createdDate">생성일 -</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content with Sidebar -->
+        <div class="main-content-wrapper">
+            <!-- Left: Tab Content Area -->
+            <div class="tab-content-area">
+                <!-- Tab Navigation -->
+                <div class="tab-navigation">
+                    <button class="tab-button active" data-tab="equipment">장비</button>
+                    <button class="tab-button" data-tab="stats">스탯</button>
+                    <button class="tab-button" data-tab="contents">컨텐츠</button>
+                    <button class="tab-button" data-tab="skills">스킬</button>
+                    <button class="tab-button" data-tab="cosmetics">코디</button>
+                </div>
+
+                <!-- Equipment Tab Content -->
+                <div id="equipmentTab" class="tab-content active">
+                    <div class="equipment-layout">
+                        <!-- Left Column: Combat Power, Set Effects, Symbols -->
+                        <div class="equipment-left-panel">
+                            <!-- Current Combat Power -->
+                            <div class="info-card compact">
+                                <p class="info-card-label">현재 전투력</p>
+                                <h6 class="info-card-value" id="currentCombatPower">-</h6>
+                            </div>
+
+                            <!-- Set Effects -->
+                            <div class="info-card compact">
+                                <p class="info-card-label">세트 효과</p>
+                                <div class="set-effects-list" id="setEffectsList">
+                                    <!-- Set effects will be dynamically loaded -->
+                                </div>
+                            </div>
+
+                            <!-- Symbols Section with Tabs -->
+                            <div class="info-card compact">
+                                <div class="symbol-tabs">
+                                    <button class="symbol-tab active" data-symbol="arcane">아케인</button>
+                                    <button class="symbol-tab" data-symbol="authentic">어센틱</button>
+                                </div>
+                                <p class="symbol-stat-text" id="symbolTotalStat">총 스탯 +0</p>
+                                <div class="symbol-grid" id="symbolGrid">
+                                    <!-- Symbols will be dynamically loaded -->
+                                </div>
+                            </div>
+
+                            <!-- Ability Section in Equipment Tab -->
+                            <div class="info-card compact">
+                                <div class="section-header">
+                                    <p class="info-card-label">어빌리티</p>
+                                    <div class="preset-tabs-small">
+                                        <button class="preset-btn-sm active" data-ability-preset="1">1</button>
+                                        <button class="preset-btn-sm" data-ability-preset="2">2</button>
+                                        <button class="preset-btn-sm" data-ability-preset="3">3</button>
+                                    </div>
+                                </div>
+                                <span class="ability-fame-text" id="abilityFameEquip">보유 명성치 : -</span>
+                                <div class="abilities-list" id="abilitiesListEquip"></div>
+                            </div>
+
+                        </div>
+
+                        <!-- Center Column: Equipment Grid with Custom Layout -->
+                        <div class="equipment-center-panel">
+                            <div class="info-card compact">
+                                <div class="equipment-header-row">
+                                    <p class="info-card-label">장비</p>
+                                    <div class="equipment-preset-tabs">
+                                        <button class="preset-btn active" data-preset="1">프리셋 1</button>
+                                        <button class="preset-btn" data-preset="2">프리셋 2</button>
+                                        <button class="preset-btn" data-preset="3">프리셋 3</button>
+                                    </div>
+                                </div>
+                                <div class="equipment-custom-grid" id="equipmentCustomGrid">
+                                    <!-- 5 rows with different column starts -->
+                                </div>
+                            </div>
+
+                            <!-- Pet Section -->
+                            <div class="info-card compact">
+                                <p class="info-card-label">펫</p>
+                                <div class="pet-equipment-grid" id="petGrid">
+                                    <!-- Pet equipment will be dynamically loaded -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Equipment Detail -->
+                        <div class="equipment-right-panel">
+                            <div class="info-card equipment-detail-card" id="equipmentDetailCard">
+                                <div class="equipment-detail-placeholder">
+                                    <p>장비를 클릭하면 상세정보가 표시됩니다</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Tab -->
+                <div id="statsTab" class="tab-content">
+                    <div class="stats-three-column">
+                        <!-- Column 1: Combat Power & Hyper Stats -->
+                        <div class="stats-col">
+                            <div class="info-card compact">
+                                <p class="info-card-label">현재 전투력</p>
+                                <h6 class="info-card-value" id="statsCombatPower">-</h6>
+                            </div>
+                            <div class="info-card compact">
+                                <div class="section-header">
+                                    <p class="info-card-label">하이퍼스탯</p>
+                                    <div class="preset-tabs-small">
+                                        <button class="preset-btn-sm active" data-hyper-preset="1">1</button>
+                                        <button class="preset-btn-sm" data-hyper-preset="2">2</button>
+                                        <button class="preset-btn-sm" data-hyper-preset="3">3</button>
+                                    </div>
+                                </div>
+                                <div class="hyper-stats-list" id="hyperStatsList"></div>
+                            </div>
+                            <div class="info-card compact">
+                                <div class="section-header">
+                                    <p class="info-card-label">어빌리티</p>
+                                    <div class="preset-tabs-small">
+                                        <button class="preset-btn-sm active" data-ability-preset="1">1</button>
+                                        <button class="preset-btn-sm" data-ability-preset="2">2</button>
+                                        <button class="preset-btn-sm" data-ability-preset="3">3</button>
+                                    </div>
+                                </div>
+                                <span class="ability-fame-text" id="abilityFame">보유 명성치 : -</span>
+                                <div class="abilities-list" id="abilitiesList"></div>
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Stat Info -->
+                        <div class="stats-col wide">
+                            <div class="info-card compact">
+                                <p class="info-card-label">스탯 정보</p>
+                                <div class="stats-grid-2col" id="basicStatsList"></div>
+                            </div>
+                            <div class="info-card compact">
+                                <p class="info-card-label">상세 정보</p>
+                                <div class="stats-grid-2col" id="detailStatsList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contents Tab -->
+                <div id="contentsTab" class="tab-content">
+                    <div class="contents-grid-layout">
+                        <!-- Dojo -->
+                        <div class="info-card compact">
+                            <p class="info-card-label">무릉도장</p>
+                            <div class="dojo-info" id="dojoInfo">
+                                <div class="dojo-floor">
+                                    <span class="dojo-value" id="dojoFloor">-</span>
+                                    <span class="dojo-time" id="dojoTime">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Union -->
+                        <div class="info-card compact">
+                            <p class="info-card-label">유니온</p>
+                            <div class="union-info" id="unionInfo">
+                                <div class="union-grade" id="unionGrade">-</div>
+                                <div class="union-level">Lv.<span id="unionLevel">-</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Achievement -->
+                        <div class="info-card compact">
+                            <p class="info-card-label">업적</p>
+                            <div class="achievement-info" id="achievementInfo">
+                                <span class="achievement-grade" id="achievementGrade">-</span>
+                                <span class="achievement-points" id="achievementPoints">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Union Champion -->
+                    <div class="info-card compact">
+                        <p class="info-card-label">유니온 챔피언 휘장 효과</p>
+                        <div class="champion-effects" id="championEffects">
+                            <!-- Champion effects will be loaded -->
+                        </div>
+                    </div>
+
+                    <!-- Artifact -->
+                    <div class="info-card compact">
+                        <div class="section-header">
+                            <p class="info-card-label">아티팩트 Lv.<span id="artifactLevel">-</span></p>
+                        </div>
+                        <div class="artifact-grid" id="artifactGrid">
+                            <!-- Artifact crystals -->
+                        </div>
+                        <div class="artifact-effects" id="artifactEffects">
+                            <!-- Artifact effects list -->
+                        </div>
+                    </div>
+
+                    <!-- Union Raid -->
+                    <div class="info-card compact">
+                        <div class="section-header">
+                            <p class="info-card-label">유니온</p>
+                            <div class="preset-tabs-small">
+                                <button class="preset-btn-sm active" data-union-preset="1">프리셋 1</button>
+                                <button class="preset-btn-sm" data-union-preset="2">프리셋 2</button>
+                                <button class="preset-btn-sm" data-union-preset="3">프리셋 3</button>
+                                <button class="preset-btn-sm" data-union-preset="4">프리셋 4</button>
+                                <button class="preset-btn-sm" data-union-preset="5">프리셋 5</button>
+                            </div>
+                        </div>
+                        <div class="union-raid-layout">
+                            <div class="union-blocks" id="unionBlocks">
+                                <!-- Union character blocks -->
+                            </div>
+                            <div class="union-effects" id="unionEffects">
+                                <!-- Union inner stat effects -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Tab -->
+                <div id="skillsTab" class="tab-content">
+                    <!-- 6th Job Progress -->
+                    <div class="info-card compact">
+                        <div class="hexa-header">
+                            <p class="info-card-label">6차 진행률</p>
+                            <span class="hexa-progress-text" id="hexaProgressText">0%</span>
+                        </div>
+                        <div class="hexa-progress-bar">
+                            <div class="hexa-progress-fill" id="hexaProgressFill"></div>
+                        </div>
+                        <div class="hexa-resources">
+                            <div class="hexa-resource">
+                                <span class="resource-icon">💎</span>
+                                <span id="solErda">0</span>/<span id="solErdaMax">0</span>
+                            </div>
+                            <div class="hexa-resource">
+                                <span class="resource-icon">🔮</span>
+                                <span id="solErdaFragment">0</span>/<span id="solErdaFragmentMax">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hexa Stat -->
+                    <div class="info-card compact">
+                        <p class="info-card-label">헥사 스탯</p>
+                        <div class="hexa-stat-grid" id="hexaStatGrid">
+                            <!-- Hexa stat slots -->
+                        </div>
+                    </div>
+
+                    <!-- Skill Grades (0-6차) -->
+                    <div class="skill-grades-container">
+                        <div class="skill-grade-section" data-grade="6">
+                            <div class="skill-grade-header">
+                                <span>6차 스킬</span>
+                                <button class="toggle-btn">▼</button>
+                            </div>
+                            <div class="skill-grade-content" id="skill6List"></div>
+                        </div>
+                        <div class="skill-grade-section" data-grade="5">
+                            <div class="skill-grade-header">
+                                <span>5차 스킬</span>
+                                <button class="toggle-btn">▼</button>
+                            </div>
+                            <div class="skill-grade-content collapsed" id="skill5List"></div>
+                        </div>
+                        <div class="skill-grade-section" data-grade="hyper-passive">
+                            <div class="skill-grade-header">
+                                <span>하이퍼 패시브</span>
+                                <button class="toggle-btn">▼</button>
+                            </div>
+                            <div class="skill-grade-content collapsed" id="hyperPassiveList"></div>
+                        </div>
+                        <div class="skill-grade-section" data-grade="hyper-active">
+                            <div class="skill-grade-header">
+                                <span>하이퍼 스킬</span>
+                                <button class="toggle-btn">▼</button>
+                            </div>
+                            <div class="skill-grade-content collapsed" id="hyperActiveList"></div>
+                        </div>
+                        <div class="skill-grade-section" data-grade="4">
+                            <div class="skill-grade-header">
+                                <span>4차 스킬</span>
+                                <button class="toggle-btn">▼</button>
+                            </div>
+                            <div class="skill-grade-content collapsed" id="skill4List"></div>
+                        </div>
+                        <div class="skill-grade-section" data-grade="3">
+                            <div class="skill-grade-header">
+                                <span>3차 스킬</span>
+                                <button class="toggle-btn">▼</button>
+                            </div>
+                            <div class="skill-grade-content collapsed" id="skill3List"></div>
+                        </div>
+                        <div class="skill-grade-section" data-grade="2">
+                            <div class="skill-grade-header">
+                                <span>2차 스킬</span>
+                                <button class="toggle-btn">▼</button>
+                            </div>
+                            <div class="skill-grade-content collapsed" id="skill2List"></div>
+                        </div>
+                        <div class="skill-grade-section" data-grade="1">
+                            <div class="skill-grade-header">
+                                <span>1차 스킬</span>
+                                <button class="toggle-btn">▼</button>
+                            </div>
+                            <div class="skill-grade-content collapsed" id="skill1List"></div>
+                        </div>
+                        <div class="skill-grade-section" data-grade="0">
+                            <div class="skill-grade-header">
+                                <span>0차 스킬</span>
+                                <button class="toggle-btn">▼</button>
+                            </div>
+                            <div class="skill-grade-content collapsed" id="skill0List"></div>
+                        </div>
+                    </div>
+
+                    <!-- Link Skills -->
+                    <div class="info-card compact">
+                        <div class="section-header">
+                            <p class="info-card-label">링크 스킬</p>
+                            <div class="preset-tabs-small">
+                                <button class="preset-btn-sm active" data-link-preset="1">프리셋 1</button>
+                                <button class="preset-btn-sm" data-link-preset="2">프리셋 2</button>
+                                <button class="preset-btn-sm" data-link-preset="3">프리셋 3</button>
+                            </div>
+                        </div>
+                        <div class="link-skill-grid" id="linkSkillGrid">
+                            <!-- Link skills -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cosmetics Tab -->
+                <div id="cosmeticsTab" class="tab-content">
+                    <!-- Basic Cash Equipment -->
+                    <div class="info-card compact">
+                        <p class="info-card-label">기본 코디</p>
+                        <div class="cash-equipment-grid" id="basicCashGrid">
+                            <!-- Basic cash items -->
+                        </div>
+                    </div>
+
+                    <!-- Cash Equipment Presets -->
+                    <div class="info-card compact">
+                        <div class="section-header">
+                            <p class="info-card-label">코디 프리셋</p>
+                            <div class="preset-tabs-small">
+                                <button class="preset-btn-sm active" data-cash-preset="1">프리셋 1</button>
+                                <button class="preset-btn-sm" data-cash-preset="2">프리셋 2</button>
+                                <button class="preset-btn-sm" data-cash-preset="3">프리셋 3</button>
+                            </div>
+                        </div>
+                        <div class="cash-equipment-grid" id="presetCashGrid">
+                            <!-- Preset cash items -->
+                        </div>
+                    </div>
+
+                    <!-- Android -->
+                    <div class="info-card compact">
+                        <p class="info-card-label">안드로이드 코디</p>
+                        <div class="cash-equipment-grid" id="androidCashGrid">
+                            <!-- Android cash items -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="sidebar">
+                <!-- Favorites -->
+                <div class="sidebar-card">
+                    <div class="sidebar-card-header">
+                        <h3>★ 즐겨찾기 캐릭터</h3>
+                        <button class="edit-btn" onclick="goToFavorites()">편집</button>
+                    </div>
+                    <div class="sidebar-list" id="favoriteCharacters">
+                        <div class="empty-state-text">등록된 캐릭터가 없습니다.</div>
+                    </div>
+                </div>
+
+                <!-- Popular Characters -->
+                <div class="sidebar-card">
+                    <div class="sidebar-card-header">
+                        <h3>🔥 실시간 인기 캐릭터</h3>
+                    </div>
+                    <div class="sidebar-list" id="popularCharacters">
+                        <!-- Popular characters will be dynamically loaded -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/character-detail.js?v=20251210006"></script>
+</body>
+</html>

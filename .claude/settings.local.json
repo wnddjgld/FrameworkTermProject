@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker start:*)",
+      "Bash(findstr:*)",
+      "Bash(./gradlew clean build:*)",
+      "Bash(dir:*)",
+      "Bash(./gradlew bootRun:*)",
+      "Bash(timeout /t 10)",
+      "Bash(ping:*)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)",
+      "Bash(cat:*)",
+      "Bash(del compare.html favorites.html history.html home.html signup.html login_temp.html)",
+      "Bash(timeout /t 3)",
+      "Bash(.gradlew bootRun:*)",
+      "Bash(./gradlew.bat bootRun:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(gradlew bootRun)",
+      "Bash(.gradlew.bat bootRun)",
+      "Bash(gradlew.bat bootRun:*)",
+      "Bash(cmd /c \"gradlew.bat bootRun\")",
+      "Bash(git checkout:*)",
+      "Bash(echo:*)",
+      "Bash(curl:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

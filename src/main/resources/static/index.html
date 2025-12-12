@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHUCHU - 메이플스토리 캐릭터 정보 검색 서비스</title>
+    <script>
+        // 로그인 상태 확인 후 리다이렉트
+        const token = localStorage.getItem('token');
+        if (token) {
+            window.location.href = '/dashboard.html';
+        } else {
+            window.location.href = '/login.html';
+        }
+    </script>
+</head>
+<body>
+    <p>페이지를 이동 중입니다...</p>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대시보드 - 메이플스토리 캐릭터 조회</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+<!-- 네비게이션 바 -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/dashboard" class="nav-logo">
+            <span class="logo-text">CheolCheol</span>
+            <span class="logo-suffix">.gg</span>
+        </a>
+        <div class="nav-menu">
+            <!-- 빈 공간 -->
+        </div>
+        <div class="nav-user">
+            <button class="theme-toggle-btn" aria-label="테마 전환">🌙</button>
+            <button class="logout-btn" onclick="logout()">로그아웃</button>
+        </div>
+    </div>
+</nav>
+
+<!-- 메인 컨텐츠 -->
+<div class="main-container">
+    <!-- 히어로 배경 섹션 -->
+    <div class="hero-background-section">
+        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1920" alt="배경" class="hero-bg-image">
+        <div class="hero-overlay">
+            <div class="logo-container">
+                <img src="https://ssl.nexon.com/s2/game/maplestory/renewal/common/logo.png" alt="메이플스토리 로고" class="maple-logo">
+            </div>
+            <p class="hero-description">메이플스토리 캐릭터 정보 검색 서비스</p>
+            <div class="search-box-wrapper">
+                <div class="search-input-container">
+                    <input type="text" id="searchInput" class="hero-search-input" placeholder="캐릭터 검색"
+                           onkeypress="if(event.key==='Enter') searchCharacter()"
+                           onfocus="showSearchHistory()"
+                           autocomplete="off"
+                           spellcheck="false">
+                    <button class="search-btn" onclick="searchCharacter()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!-- 검색 기록 드롭다운 -->
+                <div class="search-history-dropdown" id="searchHistoryDropdown" style="display: none;">
+                    <div class="search-history-header">
+                        <span class="search-history-title">최근 검색</span>
+                        <button class="clear-all-btn" onclick="clearAllHistory()">전체 삭제</button>
+                    </div>
+                    <div class="search-history-list" id="searchHistoryList">
+                        <!-- 검색 기록이 여기에 표시됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 공지사항 및 업데이트 (가로 배치 + 캐러셀) -->
+    <div class="news-carousel-section">
+        <!-- 공지사항 -->
+        <div class="news-carousel-box">
+            <div class="carousel-header">
+                <a href="https://maplestory.nexon.com/News/Notice" target="_blank" class="carousel-title-link">
+                    <h3 class="carousel-title">메이플스토리 공지사항</h3>
+                </a>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" id="noticePrevBtn" onclick="prevNotice()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button class="carousel-btn next-btn" id="noticeNextBtn" onclick="nextNotice()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="carousel-content">
+                <div id="noticeCarousel" class="carousel-track">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 업데이트 -->
+        <div class="news-carousel-box">
+            <div class="carousel-header">
+                <a href="https://maplestory.nexon.com/News/Update" target="_blank" class="carousel-title-link">
+                    <h3 class="carousel-title">메이플스토리 업데이트</h3>
+                </a>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" id="updatePrevBtn" onclick="prevUpdate()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button class="carousel-btn next-btn" id="updateNextBtn" onclick="nextUpdate()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="carousel-content">
+                <div id="updateCarousel" class="carousel-track">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 이벤트 및 캐시샵 (세로 배치) -->
+    <div class="events-section">
+        <!-- 진행 중인 이벤트 -->
+        <div class="event-list-box">
+            <div class="event-header">
+                <h3 class="event-title">진행 중인 이벤트</h3>
+            </div>
+            <div id="eventList" class="event-list-vertical">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+        </div>
+
+        <!-- 캐시샵 공지 -->
+        <div class="event-list-box">
+            <div class="event-header">
+                <h3 class="event-title">캐시샵 공지</h3>
+            </div>
+            <div id="cashshopList" class="event-list-vertical">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/theme.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
